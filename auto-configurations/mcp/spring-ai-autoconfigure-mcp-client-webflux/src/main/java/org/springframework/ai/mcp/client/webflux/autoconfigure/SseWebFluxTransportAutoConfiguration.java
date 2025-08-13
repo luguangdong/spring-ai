@@ -90,7 +90,12 @@ public class SseWebFluxTransportAutoConfiguration {
 		var objectMapper = objectMapperProvider.getIfAvailable(ObjectMapper::new);
 
 		for (Map.Entry<String, SseParameters> serverParameters : sseProperties.getConnections().entrySet()) {
-			var webClientBuilder = webClientBuilderTemplate.clone().baseUrl(serverParameters.getValue().url());
+			var webClientBuilder = webClientBuilderTemplate.clone().baseUrl(serverParameters.getValue().url())
+					.defaultHeaders(headers -> {;
+						if (serverParameters.getValue().headers() != null) {
+							serverParameters.getValue().headers().forEach(headers::add);
+						}
+					});
 			String sseEndpoint = serverParameters.getValue().sseEndpoint() != null
 					? serverParameters.getValue().sseEndpoint() : "/sse";
 			var transport = WebFluxSseClientTransport.builder(webClientBuilder)

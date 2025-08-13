@@ -26,7 +26,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  *
  * <p>
  * These properties allow configuration of multiple named SSE connections to MCP servers.
- * Each connection is configured with a URL endpoint for SSE communication.
+ * Each connection is configured with a URL endpoint and defaultHeaders for SSE communication.
  *
  * <p>
  * Example configuration: <pre>
@@ -34,8 +34,15 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  *   connections:
  *     server1:
  *       url: http://localhost:8080/events
+ *       headers:
+ *         key1: value1
+ *         key2: value2
  *     server2:
  *       url: http://otherserver:8081/events
+ *       headers:
+ *         key1: value1
+ *         key2: value2
+ *
  * </pre>
  *
  * @author Christian Tzolov
@@ -68,8 +75,9 @@ public class McpSseClientProperties {
 	 *
 	 * @param url the URL endpoint for SSE communication with the MCP server
 	 * @param sseEndpoint the SSE endpoint for the MCP server
+	 * @param headers the defaultHeaders for the MCP server
 	 */
-	public record SseParameters(String url, String sseEndpoint) {
+	public record SseParameters(String url, String sseEndpoint,Map<String, String> headers) {
 	}
 
 }
